@@ -141,7 +141,7 @@ class AttackEval:
             for ret in self.__iter_metrics(zip(dataset, result_iter())):
                 yield ret
 
-    def eval(self, dataset: Iterable[Dict[str, Any]], total_len : Optional[int] = None, visualize : bool = False, progress_bar : bool = False, num_workers : int = 0, chunk_size : Optional[int] = None, path : Optional[str]):
+    def eval(self, dataset: Iterable[Dict[str, Any]], total_len : Optional[int] = None, visualize : bool = False, progress_bar : bool = False, num_workers : int = 0, chunk_size : Optional[int] = None, path : Optional[str] = None):
         """
         Evaluation function of `AttackEval`.
 
