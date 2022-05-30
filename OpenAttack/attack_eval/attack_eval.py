@@ -260,7 +260,7 @@ class AttackEval:
         df = pd.DataFrame(x_att, columns=['x_adv'])
         
         with open(path, 'a') as f:
-            df.to_csv(f, header=False, index=False)
+            df.to_csv(f, header=False)
           
         return summary
     
