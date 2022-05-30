@@ -174,6 +174,7 @@ class AttackEval:
         total_result_cnt = {}
         total_inst = 0
         success_inst = 0
+        x_att = []
 
         # Begin for
         for i, res in enumerate(result_iterator):
@@ -183,7 +184,9 @@ class AttackEval:
             if TAG_Classification in self.victim.TAGS:
                 x_orig = res["data"]["x"]
                 if res["success"]:
+                    
                     x_adv = res["result"]
+                    x_att.append(x_adv)
                     if Tag("get_prob", "victim") in self.victim.TAGS:
                         self.victim.set_context(res["data"], None)
                         try:
@@ -253,7 +256,7 @@ class AttackEval:
         
         if visualize:
             result_visualizer(summary, sys.stdout.write)
-        return summary
+        return [summary, x_att];
     
     ## TODO generate adversarial samples
     
