@@ -257,8 +257,11 @@ class AttackEval:
         if visualize:
             result_visualizer(summary, sys.stdout.write)
             
-        df = pd.DataFrame(x_att, columns=['x_adv']
-        df.to_csv(path,  mode='a', index=False, header=False)              
+        df = pd.DataFrame(x_att, columns=['x_adv'])
+        
+        with open(path, 'a') as f:
+            df.to_csv(f, header=False)
+          
         return summary
     
     ## TODO generate adversarial samples
