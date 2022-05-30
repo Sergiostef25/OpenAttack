@@ -141,7 +141,7 @@ class AttackEval:
             for ret in self.__iter_metrics(zip(dataset, result_iter())):
                 yield ret
 
-    def eval(self, dataset: Iterable[Dict[str, Any]], total_len : Optional[int] = None, visualize : bool = False, progress_bar : bool = False, num_workers : int = 0, chunk_size : Optional[int] = None, path : Optional[str] = None):
+    def eval(self, dataset: Iterable[Dict[str, Any]], total_len : Optional[int] = None, visualize : bool = False, progress_bar : bool = False, num_workers : int = 0, chunk_size : Optional[int] = None):
         """
         Evaluation function of `AttackEval`.
 
@@ -259,7 +259,7 @@ class AttackEval:
             
         df = pd.DataFrame(x_att, columns=['x_adv'])
         
-        with open(path, 'a') as f:
+        with open('/content/drive/MyDrive/datasets/adv_clothing.csv', 'a') as f:
             df.to_csv(f, header=False)
           
         return summary
