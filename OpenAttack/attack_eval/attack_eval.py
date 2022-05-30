@@ -9,7 +9,7 @@ from ..text_process.tokenizer import Tokenizer, get_default_tokenizer
 from ..victim.base import Victim
 from ..attackers.base import Attacker
 from ..metric import AttackMetric, MetricSelector
-
+import pandas as pd
 import multiprocessing as mp
 
 logger = logging.getLogger(__name__)
@@ -141,7 +141,7 @@ class AttackEval:
             for ret in self.__iter_metrics(zip(dataset, result_iter())):
                 yield ret
 
-    def eval(self, dataset: Iterable[Dict[str, Any]], total_len : Optional[int] = None, visualize : bool = False, progress_bar : bool = False, num_workers : int = 0, chunk_size : Optional[int] = None):
+    def eval(self, dataset: Iterable[Dict[str, Any]], total_len : Optional[int] = None, visualize : bool = False, progress_bar : bool = False, num_workers : int = 0, chunk_size : Optional[int] = None, path : Optional[str]):
         """
         Evaluation function of `AttackEval`.
 
@@ -256,7 +256,10 @@ class AttackEval:
         
         if visualize:
             result_visualizer(summary, sys.stdout.write)
-        return [summary, x_att];
+            
+        df = pd.DataFrame(x_att, columns=['x_adv']
+        df.to_csv(path,  mode='a', index=False, header=False)              
+        return summary
     
     ## TODO generate adversarial samples
     
