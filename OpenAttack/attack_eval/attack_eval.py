@@ -261,7 +261,7 @@ class AttackEval:
         
         #with open('/content/drive/MyDrive/datasets/adv_clothing.csv', 'a') as f:
             #df.to_csv(f, header=False)
-        adv = [summaty,df]
+        adv = [summary,df]
         return adv
     
     ## TODO generate adversarial samples
