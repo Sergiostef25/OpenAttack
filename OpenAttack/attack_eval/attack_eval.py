@@ -246,9 +246,7 @@ class AttackEval:
         summary["Total Attacked Instances"] = total_inst
         summary["Successful Instances"] = success_inst
         summary["Attack Success Rate"] = success_inst / total_inst
-        for kw in 
-        
-        t_cnt.keys():
+        for kw in total_result_cnt.keys():
             if kw in ["Succeed"]:
                 continue
             if kw in ["Query Exceeded"]:
@@ -259,118 +257,12 @@ class AttackEval:
         if visualize:
             result_visualizer(summary, sys.stdout.write)
             
-        summary['adv'] = x_att
+        df = pd.DataFrame(x_att, columns=['x_adv'])
         
+        with open('/content/drive/MyDrive/TextAdvAtt/adv_clothing.csv', 'a') as f:
+            df.to_csv(f, header=False)
         
         return summary
-    
-    def eval_2(self, dataset: Iterable[Dict[str, Any]], total_len : Optional[int] = None, visualize : bool = False, progress_bar : bool = False, num_workers : int = 0, chunk_size : Optional[int] = None):
-        """
-        Evaluation function of `AttackEval`.
-
-        Args:
-            dataset: An iterable dataset.
-            total_len: Total length of dataset (will be used if dataset doesn't has a `__len__` attribute).
-            visualize: Display a pretty result for each data in the dataset.
-            progress_bar: Display a progress bar if `True`.
-            num_worers: The number of processes running the attack algorithm. Default: 0 (running on the main process).
-            chunk_size: Processing pool trunks size.
-        
-        Returns:
-            A dict of attack evaluation summaries.
-
-        """
-
-
-        if hasattr(dataset, "__len__"):
-            total_len = len(dataset)
-        
-        def tqdm_writer(x):
-            return tqdm.write(x, end="")
-        
-        if progress_bar:
-            result_iterator = tqdm(self.ieval(dataset, num_workers, chunk_size), total=total_len)
-        else:
-            result_iterator = self.ieval(dataset, num_workers, chunk_size)
-
-        total_result = {}
-        total_result_cnt = {}
-        total_inst = 0
-        success_inst = 0
-        x_att = []
-
-        # Begin for
-        for i, res in enumerate(result_iterator):
-            total_inst += 1
-            success_inst += int(res["success"])
-
-            if TAG_Classification in self.victim.TAGS:
-                x_orig = res["data"]["x"]
-                if res["success"]:
-                    
-                    x_adv = res["result"]
-                    x_att.append(x_adv)
-                    if Tag("get_prob", "victim") in self.victim.TAGS:
-                        self.victim.set_context(res["data"], None)
-                        try:
-                            probs = self.victim.get_prob([x_orig, x_adv])
-                        finally:
-                            self.victim.clear_context()
-                        y_orig = probs[0]
-                        y_adv = probs[1]
-                    elif Tag("get_pred", "victim") in self.victim.TAGS:
-                        self.victim.set_context(res["data"], None)
-                        try:
-                            preds = self.victim.get_pred([x_orig, x_adv])
-                        finally:
-                            self.victim.clear_context()
-                        y_orig = int(preds[0])
-                        y_adv = int(preds[1])
-                    else:
-                        raise RuntimeError("Invalid victim model")
-                else:
-                    y_adv = None
-                    x_adv = None
-                    if Tag("get_prob", "victim") in self.victim.TAGS:
-                        self.victim.set_context(res["data"], None)
-                        try:
-                            probs = self.victim.get_prob([x_orig])
-                        finally:
-                            self.victim.clear_context()
-                        y_orig = probs[0]
-                    elif Tag("get_pred", "victim") in self.victim.TAGS:
-                        self.victim.set_context(res["data"], None)
-                        try:
-                            preds = self.victim.get_pred([x_orig])
-                        finally:
-                            self.victim.clear_context()
-                        y_orig = int(preds[0])
-                    else:
-                        raise RuntimeError("Invalid victim model")
-                info = res["metrics"]
-                info["Succeed"] = res["success"]
-                if visualize:
-                    if progress_bar:
-                        visualizer(i + 1, x_orig, y_orig, x_adv, y_adv, info, tqdm_writer, self.tokenizer)
-                    else:
-                        visualizer(i + 1, x_orig, y_orig, x_adv, y_adv, info, sys.stdout.write, self.tokenizer)
-            for kw, val in res["metrics"].items():
-                if val is None:
-                    continue
-
-                if kw not in total_result_cnt:
-                    total_result_cnt[kw] = 0
-                    total_result[kw] = 0
-                total_result_cnt[kw] += 1
-                total_result[kw] += float(val)
-        # End for
-
-        
-        
-        
-        return x_att
-    
-    
     
     ## TODO generate adversarial samples
     
