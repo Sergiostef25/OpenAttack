@@ -246,7 +246,9 @@ class AttackEval:
         summary["Total Attacked Instances"] = total_inst
         summary["Successful Instances"] = success_inst
         summary["Attack Success Rate"] = success_inst / total_inst
-        for kw in total_result_cnt.keys():
+        for kw in 
+        
+        t_cnt.keys():
             if kw in ["Succeed"]:
                 continue
             if kw in ["Query Exceeded"]:
@@ -257,10 +259,8 @@ class AttackEval:
         if visualize:
             result_visualizer(summary, sys.stdout.write)
             
-        df = pd.DataFrame(x_att, columns=['x_adv'])
+        summary['adv'] = x_att
         
-        with open('/content/drive/MyDrive/TextAdvAtt/adv_clothing.csv', 'a') as f:
-            df.to_csv(f, header=False)
         
         return summary
     
