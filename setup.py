@@ -13,14 +13,14 @@ with  open("requirements.txt") as freq:
         requirements.append( line.strip() )
 
 setuptools.setup(
-    name="OpenAttack",  # Replace with your own username
+    name="OpenAttackS",  # Replace with your own username
     version=VERSION,
     author="THUNLP",
     author_email="thunlp@gmail.com",
-    description="OpenAttack",
+    description="OpenAttackS",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/thunlp/OpenAttack",
+    url="https://github.com/Sergiostef25/OpenAttack",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
