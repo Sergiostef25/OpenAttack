@@ -178,6 +178,8 @@ class AttackEval:
         x_or = []
         y_or = []
         y_att = []
+        sent_att = []
+        sent_or = []
 
         # Begin for
         for i, res in enumerate(result_iterator):
@@ -231,8 +233,20 @@ class AttackEval:
                 info["Succeed"] = res["success"]
                 x_att.append(x_adv)
                 x_or.append(x_orig)
-                y_att.append(y_orig)
-                y_or.append(y_orig)
+                if y_att[0] > y_att[1]:
+                    y_att.append(y_att[0])
+                    sent_att.append(1)
+                else:
+                    y_att.append(y_att[1])
+                    sent_att.append(0)
+                    
+                if y_orig[0] > y_orig[1]: #positive 
+                    y_or.append(y_orig[0])
+                    sent_or.append(1)
+                else: #negative
+                    y_or.append(y_orig[1])
+                    sent_or.append(0)
+
                 
                 if visualize:
                     if progress_bar:
@@ -269,7 +283,7 @@ class AttackEval:
         
         #with open('/content/drive/MyDrive/datasets/adv_clothing.csv', 'a') as f:
             #df.to_csv(f, header=False)
-        d = {'x_adv':x_att, 'x_orig':x_or,'y_adv':y_att, 'y_orig':y_or}
+        d = {'x_adv':x_att, 'x_orig':x_or,'y_adv':y_att, 'y_orig':y_or,'sent_adv':sent_att, 'sent_orig':sent_or}
         return [summary, d];
 
     
