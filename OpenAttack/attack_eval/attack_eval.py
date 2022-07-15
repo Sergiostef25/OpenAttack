@@ -176,7 +176,8 @@ class AttackEval:
         success_inst = 0
         x_att = []
         x_or = []
-        
+        y_or = []
+        y_att = []
 
         # Begin for
         for i, res in enumerate(result_iterator):
@@ -188,7 +189,7 @@ class AttackEval:
                 if res["success"]:
                     
                     x_adv = res["result"]
-                    x_att.append(x_adv)
+                    
                     if Tag("get_prob", "victim") in self.victim.TAGS:
                         self.victim.set_context(res["data"], None)
                         try:
@@ -228,8 +229,10 @@ class AttackEval:
                         raise RuntimeError("Invalid victim model")
                 info = res["metrics"]
                 info["Succeed"] = res["success"]
-                
+                x_att.append(x_adv)
                 x_or.append(x_orig)
+                y_att.append(y_orig)
+                y_or.append(y_orig)
                 
                 if visualize:
                     if progress_bar:
@@ -266,8 +269,8 @@ class AttackEval:
         
         #with open('/content/drive/MyDrive/datasets/adv_clothing.csv', 'a') as f:
             #df.to_csv(f, header=False)
-        
-        return [summary, [x_att,x_or]];
+        d = {'x_adv':x_att, 'x_orig':x_or,'y_adv':y_att, 'y_orig':y_or}
+        return [summary, d];
 
     
     ## TODO generate adversarial samples
