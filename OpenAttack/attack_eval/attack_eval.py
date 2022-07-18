@@ -235,19 +235,19 @@ class AttackEval:
                 x_or.append(x_orig)
                 #y_att.append(y_adv)
                 #y_or.append(y_orig)
-                if y_adv[0] > y_adv[1]:
-                    y_att.append(y_adv[0]*100)
-                    sent_adv.append(0)
-                else:
-                    y_att.append(y_adv[1]*100)
-                    sent_adv.append(1)
+                #if y_adv[0] > y_adv[1]:
+                #    y_att.append(y_adv[0]*100)
+                #    sent_adv.append(0)
+                #else:
+                #    y_att.append(y_adv[1]*100)
+                #    sent_adv.append(1)
                     
-                if y_orig[0] > y_orig[1]:
-                    y_or.append(y_orig[0]*100)
-                    sent_orig.append(0)
-                else:
-                    y_or.append(y_orig[1]*100)
-                    sent_orig.append(1)
+                #if y_orig[0] > y_orig[1]:
+                #    y_or.append(y_orig[0]*100)
+                #    sent_orig.append(0)
+                #else:
+                #    y_or.append(y_orig[1]*100)
+                #    sent_orig.append(1)
 
 
                 
@@ -286,7 +286,8 @@ class AttackEval:
         
         #with open('/content/drive/MyDrive/datasets/adv_clothing.csv', 'a') as f:
             #df.to_csv(f, header=False)
-        d = {'x_adv':x_att, 'x_orig':x_or,'y_adv_perc':y_att, 'y_orig_perc':y_or,'sent_adv':sent_adv, 'sent_orig':sent_orig}
+        #d = {'x_adv':x_att, 'x_orig':x_or,'y_adv_perc':y_att, 'y_orig_perc':y_or,'sent_adv':sent_adv, 'sent_orig':sent_orig}
+        d = {'x_adv':x_att, 'x_orig':x_or}
         return [summary, d];
 
     
